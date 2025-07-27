@@ -154,7 +154,20 @@ function imh_cached_shell_exec($tag, $command, $sar_interval)
 if ($isCPanelServer) {
     require_once('/usr/local/cpanel/php/WHM.php');
     WHM::header($script_name . ' WHM Interface', 0, 0);
-    $key_file = '/opt/dns/placeholder';
+
+    // Find all key files in /var/cpanel/cluster/*/config/imh
+    $key_files = [];
+    $cluster_dir = '/var/cpanel/cluster';
+    if (is_dir($cluster_dir)) {
+        foreach (glob($cluster_dir . '/*/config/imh') as $file) {
+            if (is_file($file)) {
+                $key_files[] = [
+                    'username' => basename(dirname(dirname(dirname($file)))), // Extract username from path
+                    'contents' => is_readable($file) ? file_get_contents($file) : null
+                ];
+            }
+        }
+    }
     $platform = 'cPanel';
 } else {
     echo '<div class="panel-body">';
@@ -591,6 +604,22 @@ if ($key_file) {
     }
 } else {
     echo "<span style='color:#b32d2e;'>Unable to determine platform or key file path.</span>";
+}
+
+if ($key_files) {
+    echo "<div style='margin-top:1em;'>";
+    echo "<strong>Cluster Key Files:</strong><br>";
+    foreach ($key_files as $kf) {
+        echo "<div style='margin-bottom:1em;'>";
+        echo "<span style='font-weight:600;'>User:</span> " . htmlspecialchars($kf['username']) . "<br>";
+        if ($kf['contents'] !== null && strlen(trim($kf['contents']))) {
+            echo "<pre style='background:#fafafa;border:1px solid #eee;padding:.75em;'>" . htmlspecialchars($kf['contents']) . "</pre>";
+        } else {
+            echo "<span style='color:#b32d2e;'>Key file exists but is empty or unreadable.</span>";
+        }
+        echo "</div>";
+    }
+    echo "</div>";
 }
 
 echo '</div>';
