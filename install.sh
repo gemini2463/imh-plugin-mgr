@@ -196,20 +196,20 @@ install_cpanel() {
 
     # Move files to final destination
     print_message "$BRIGHTBLUE" "Installing files..."
-    copy_if_changed "$TEMP_DIR/index.php" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy index.php"
+    copy_if_changed "$TEMP_DIR/index.php" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/index.php" || error_exit "Failed to copy index.php"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.conf" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy config"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.conf" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/$SCRIPT_NAME.conf" || error_exit "Failed to copy config"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy $SCRIPT_NAME.js"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/$SCRIPT_NAME.js" || error_exit "Failed to copy $SCRIPT_NAME.js"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy image"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/$SCRIPT_NAME.png" || error_exit "Failed to copy image"
 
     # Set permissions
     chmod 755 "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/index.php" || error_exit "Failed to set permissions"
 
     # Copy image to addon_plugins if directory exists
     if [[ -d "/usr/local/cpanel/whostmgr/docroot/addon_plugins" ]]; then
-        copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/addon_plugins/" || print_message "$YELLOW" "Warning: Failed to copy image to addon_plugins"
+        copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/addon_plugins/$SCRIPT_NAME.png" || print_message "$YELLOW" "Warning: Failed to copy image to addon_plugins"
     fi
 
     # Register plugin
@@ -265,9 +265,9 @@ install_cwp() {
     create_directory "/usr/local/cwpsrv/htdocs/resources/admin/include"
 
     # Move additional files
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cwpsrv/htdocs/admin/design/img/" || print_message "$YELLOW" "Warning: Failed to copy image"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cwpsrv/htdocs/admin/design/img/$SCRIPT_NAME.png" || print_message "$YELLOW" "Warning: Failed to copy image"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cwpsrv/htdocs/admin/design/js/" || print_message "$YELLOW" "Warning: Failed to copy $SCRIPT_NAME.js"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cwpsrv/htdocs/admin/design/js/$SCRIPT_NAME.js" || print_message "$YELLOW" "Warning: Failed to copy $SCRIPT_NAME.js"
 
     copy_if_changed "$TEMP_DIR/cwp-include.php" "/usr/local/cwpsrv/htdocs/resources/admin/include/$SCRIPT_NAME.php" || error_exit "Failed to copy include file"
 
@@ -291,9 +291,9 @@ install_plain() {
     download_file_with_checksum "$BASE_URL/$SCRIPT_NAME.png" "$TEMP_DIR/$SCRIPT_NAME.png" || error_exit "Failed to get PNG file"
 
     print_message "$BRIGHTBLUE" "Installing files..."
-    copy_if_changed "$TEMP_DIR/index.php" "$dest/"
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "$dest/"
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "$dest/"
+    copy_if_changed "$TEMP_DIR/index.php" "$dest/index.php"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "$dest/$SCRIPT_NAME.js"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "$dest/$SCRIPT_NAME.png"
     chmod 700 "$dest/index.php"
     chmod 600 "$dest/$SCRIPT_NAME.js" "$dest/$SCRIPT_NAME.png"
 
