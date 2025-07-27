@@ -606,7 +606,7 @@ if ($key_file) {
 
 if ($key_files) {
     echo "<div style='margin-top:1em;'>";
-    echo "<strong>Cluster Key Files:</strong><br>";
+    echo "<strong>Cluster Key Files:</strong><br/><br/>";
     foreach ($key_files as $kf) {
         echo "<div style='margin-bottom:1em;'>";
         echo "<span style='font-weight:600;'>User:</span> " . htmlspecialchars($kf['username']) . "<br>";

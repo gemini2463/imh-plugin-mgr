@@ -152,6 +152,13 @@ function dummyFunction() {
 6c15c22ec9c72c2e99ed36bd53a5379ff799b118c05a6c6efc533c33bdbc7a42  imh-plugin-mgr.js
 </file>
 
+<file path="plugin-list.jsonl">
+{"plugin_name":"imh-plugin-mgr","title":"IMH Plugin Manager","description":"Controller plugin for all IMH plugins.","version":"0.0.2","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-plugin-mgr/master/install.sh | sh"}
+{"plugin_name":"imh-new-plugin","title":"New Plugin Template","description":"Skeleton plugin for developers to develop upon.","version":"0.0.2","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-new-plugin/master/install.sh | sh"}
+{"plugin_name":"imh-php-extension","title":"PHP Extensions","description":"Check installed PHP versions and their installed extensions.","version":"0.0.2","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-php-extension/master/install.sh | sh"}
+{"plugin_name":"imh-sys-snap","title":"System Snapshot","description":"Check CPU and memory usage by users and processes.","version":"0.1.3","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-sys-snap/master/install.sh | sh"}
+</file>
+
 <file path="install.sh">
 #!/bin/bash
 
@@ -351,20 +358,20 @@ install_cpanel() {
 
     # Move files to final destination
     print_message "$BRIGHTBLUE" "Installing files..."
-    copy_if_changed "$TEMP_DIR/index.php" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy index.php"
+    copy_if_changed "$TEMP_DIR/index.php" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/index.php" || error_exit "Failed to copy index.php"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.conf" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy config"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.conf" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/$SCRIPT_NAME.conf" || error_exit "Failed to copy config"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy $SCRIPT_NAME.js"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/$SCRIPT_NAME.js" || error_exit "Failed to copy $SCRIPT_NAME.js"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/" || error_exit "Failed to copy image"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/$SCRIPT_NAME.png" || error_exit "Failed to copy image"
 
     # Set permissions
     chmod 755 "/usr/local/cpanel/whostmgr/docroot/cgi/$SCRIPT_NAME/index.php" || error_exit "Failed to set permissions"
 
     # Copy image to addon_plugins if directory exists
     if [[ -d "/usr/local/cpanel/whostmgr/docroot/addon_plugins" ]]; then
-        copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/addon_plugins/" || print_message "$YELLOW" "Warning: Failed to copy image to addon_plugins"
+        copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cpanel/whostmgr/docroot/addon_plugins/$SCRIPT_NAME.png" || print_message "$YELLOW" "Warning: Failed to copy image to addon_plugins"
     fi
 
     # Register plugin
@@ -420,9 +427,9 @@ install_cwp() {
     create_directory "/usr/local/cwpsrv/htdocs/resources/admin/include"
 
     # Move additional files
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cwpsrv/htdocs/admin/design/img/" || print_message "$YELLOW" "Warning: Failed to copy image"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "/usr/local/cwpsrv/htdocs/admin/design/img/$SCRIPT_NAME.png" || print_message "$YELLOW" "Warning: Failed to copy image"
 
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cwpsrv/htdocs/admin/design/js/" || print_message "$YELLOW" "Warning: Failed to copy $SCRIPT_NAME.js"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "/usr/local/cwpsrv/htdocs/admin/design/js/$SCRIPT_NAME.js" || print_message "$YELLOW" "Warning: Failed to copy $SCRIPT_NAME.js"
 
     copy_if_changed "$TEMP_DIR/cwp-include.php" "/usr/local/cwpsrv/htdocs/resources/admin/include/$SCRIPT_NAME.php" || error_exit "Failed to copy include file"
 
@@ -446,9 +453,9 @@ install_plain() {
     download_file_with_checksum "$BASE_URL/$SCRIPT_NAME.png" "$TEMP_DIR/$SCRIPT_NAME.png" || error_exit "Failed to get PNG file"
 
     print_message "$BRIGHTBLUE" "Installing files..."
-    copy_if_changed "$TEMP_DIR/index.php" "$dest/"
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "$dest/"
-    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "$dest/"
+    copy_if_changed "$TEMP_DIR/index.php" "$dest/index.php"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.js" "$dest/$SCRIPT_NAME.js"
+    copy_if_changed "$TEMP_DIR/$SCRIPT_NAME.png" "$dest/$SCRIPT_NAME.png"
     chmod 700 "$dest/index.php"
     chmod 600 "$dest/$SCRIPT_NAME.js" "$dest/$SCRIPT_NAME.png"
 
@@ -555,11 +562,53 @@ main() {
 main "$@"
 </file>
 
-<file path="plugin-list.jsonl">
-{"plugin_name":"imh-plugin-mgr","title":"IMH Plugin Manager","description":"Controller plugin for all IMH plugins.","version":"0.0.2","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-plugin-mgr/master/install.sh | sh"}
-{"plugin_name":"imh-new-plugin","title":"New Plugin Template","description":"Skeleton plugin for developers to develop upon.","version":"0.0.2","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-new-plugin/master/install.sh | sh"}
-{"plugin_name":"imh-php-extension","title":"PHP Extensions","description":"Check installed PHP versions and their installed extensions.","version":"0.0.2","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-php-extension/master/install.sh | sh"}
-{"plugin_name":"imh-sys-snap","title":"System Snapshot","description":"Check CPU and memory usage by users and processes.","version":"0.1.3","install_command":"curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-sys-snap/master/install.sh | sh"}
+<file path="README.md">
+# imh-plugin-mgr, v0.0.2
+
+cPanel and CWP plugin manager.
+
+- cPanel/WHM path: `/usr/local/cpanel/whostmgr/docroot/cgi/imh-plugin-mgr/index.php`
+- CWP path: `/usr/local/cwpsrv/htdocs/resources/admin/modules/imh-plugin-mgr.php`
+
+## Screenshot
+
+![Screenshot](screenshot.png)
+
+# Installation
+
+- Run as the Root user: `curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-plugin-mgr/master/install.sh | sh`
+
+# Files
+
+## Shell installer
+
+- install.sh
+
+## Main script
+
+- index.php - Identical to `imh-plugin-mgr.php`.
+- index.php.sha256 - `sha256sum index.php > index.php.sha256`
+- imh-plugin-mgr.php - Identical to `index.php`.
+- imh-plugin-mgr.php.sha256 - `sha256sum imh-plugin-mgr.php > imh-plugin-mgr.php.sha256`
+
+## Javascript
+
+- imh-plugin-mgr.js - Bundle React or any other javascript in this file.
+- imh-plugin-mgr.js.sha256 - `sha256sum imh-plugin-mgr.js > imh-plugin-mgr.js.sha256`
+
+## Icon
+
+- imh-plugin-mgr.png - [48x48 png image](https://api.docs.cpanel.net/guides/guide-to-whm-plugins/guide-to-whm-plugins-plugin-files/#icons)
+- imh-plugin-mgr.png.sha256 - `sha256sum imh-plugin-mgr.png > imh-plugin-mgr.png.sha256`
+
+## cPanel conf
+- imh-plugin-mgr.conf - [AppConfig Configuration File](https://api.docs.cpanel.net/guides/guide-to-whm-plugins/guide-to-whm-plugins-appconfig-configuration-file)
+- imh-plugin-mgr.conf.sha256 - `sha256sum imh-plugin-mgr.conf > imh-plugin-mgr.conf.sha256`
+
+## CWP include
+
+- cwp-include.php - [CWP include](https://wiki.centos-webpanel.com/how-to-build-a-cwp-module)
+- cwp-include.php.sha256 - `sha256sum cwp-include.php > cwp-include.php.sha256`
 </file>
 
 <file path="imh-plugin-mgr.php">
@@ -1171,7 +1220,7 @@ if ($key_file) {
 
 if ($key_files) {
     echo "<div style='margin-top:1em;'>";
-    echo "<strong>Cluster Key Files:</strong><br>";
+    echo "<strong>Cluster Key Files:</strong><br/><br/>";
     foreach ($key_files as $kf) {
         echo "<div style='margin-bottom:1em;'>";
         echo "<span style='font-weight:600;'>User:</span> " . htmlspecialchars($kf['username']) . "<br>";
@@ -1207,7 +1256,7 @@ if ($isCPanelServer) {
 </file>
 
 <file path="imh-plugin-mgr.php.sha256">
-4b10704ea68f667d89915ec53ed77128566ae1d6322b154563480e0624eae533  imh-plugin-mgr.php
+bb53a64b8d1bfda0293b7ddcc90a7079fe5622a9fc58be29fa88e5ced66f86e9  imh-plugin-mgr.php
 </file>
 
 <file path="index.php">
@@ -1819,7 +1868,7 @@ if ($key_file) {
 
 if ($key_files) {
     echo "<div style='margin-top:1em;'>";
-    echo "<strong>Cluster Key Files:</strong><br>";
+    echo "<strong>Cluster Key Files:</strong><br/><br/>";
     foreach ($key_files as $kf) {
         echo "<div style='margin-bottom:1em;'>";
         echo "<span style='font-weight:600;'>User:</span> " . htmlspecialchars($kf['username']) . "<br>";
@@ -1855,56 +1904,7 @@ if ($isCPanelServer) {
 </file>
 
 <file path="index.php.sha256">
-4b10704ea68f667d89915ec53ed77128566ae1d6322b154563480e0624eae533  index.php
-</file>
-
-<file path="README.md">
-# imh-plugin-mgr, v0.0.2
-
-cPanel and CWP plugin manager.
-
-- cPanel/WHM path: `/usr/local/cpanel/whostmgr/docroot/cgi/imh-plugin-mgr/index.php`
-- CWP path: `/usr/local/cwpsrv/htdocs/resources/admin/modules/imh-plugin-mgr.php`
-
-## Screenshot
-
-![Screenshot](screenshot.png)
-
-# Installation
-
-- Run as the Root user: `curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-plugin-mgr/master/install.sh | sh`
-
-# Files
-
-## Shell installer
-
-- install.sh
-
-## Main script
-
-- index.php - Identical to `imh-plugin-mgr.php`.
-- index.php.sha256 - `sha256sum index.php > index.php.sha256`
-- imh-plugin-mgr.php - Identical to `index.php`.
-- imh-plugin-mgr.php.sha256 - `sha256sum imh-plugin-mgr.php > imh-plugin-mgr.php.sha256`
-
-## Javascript
-
-- imh-plugin-mgr.js - Bundle React or any other javascript in this file.
-- imh-plugin-mgr.js.sha256 - `sha256sum imh-plugin-mgr.js > imh-plugin-mgr.js.sha256`
-
-## Icon
-
-- imh-plugin-mgr.png - [48x48 png image](https://api.docs.cpanel.net/guides/guide-to-whm-plugins/guide-to-whm-plugins-plugin-files/#icons)
-- imh-plugin-mgr.png.sha256 - `sha256sum imh-plugin-mgr.png > imh-plugin-mgr.png.sha256`
-
-## cPanel conf
-- imh-plugin-mgr.conf - [AppConfig Configuration File](https://api.docs.cpanel.net/guides/guide-to-whm-plugins/guide-to-whm-plugins-appconfig-configuration-file)
-- imh-plugin-mgr.conf.sha256 - `sha256sum imh-plugin-mgr.conf > imh-plugin-mgr.conf.sha256`
-
-## CWP include
-
-- cwp-include.php - [CWP include](https://wiki.centos-webpanel.com/how-to-build-a-cwp-module)
-- cwp-include.php.sha256 - `sha256sum cwp-include.php > cwp-include.php.sha256`
+bb53a64b8d1bfda0293b7ddcc90a7079fe5622a9fc58be29fa88e5ced66f86e9  index.php
 </file>
 
 </files>
