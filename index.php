@@ -162,7 +162,7 @@ if ($isCPanelServer) {
         foreach (glob($cluster_dir . '/*/config/imh') as $file) {
             if (is_file($file)) {
                 $key_files[] = [
-                    'username' => basename(dirname(dirname(dirname($file)))), // Extract username from path
+                    'username' => basename(dirname(dirname($file))), // Extract username from path
                     'contents' => is_readable($file) ? file_get_contents($file) : null
                 ];
             }
@@ -602,8 +602,6 @@ if ($key_file) {
             echo "<span style='color:#b32d2e;'>The key file <code>" . htmlspecialchars($key_file) . "</code> was not found on this $platform server.</span>";
         }
     }
-} else {
-    echo "<span style='color:#b32d2e;'>Unable to determine platform or key file path.</span>";
 }
 
 if ($key_files) {
