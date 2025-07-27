@@ -5,6 +5,10 @@ cPanel and CWP plugin manager.
 - cPanel/WHM path: `/usr/local/cpanel/whostmgr/docroot/cgi/imh-plugin-mgr/index.php`
 - CWP path: `/usr/local/cwpsrv/htdocs/resources/admin/modules/imh-plugin-mgr.php`
 
+## Screenshot
+
+![Screenshot](screenshot.png)
+
 # Installation
 
 - Run as the Root user: `curl -fsSL https://raw.githubusercontent.com/gemini2463/imh-plugin-mgr/master/install.sh | sh`
