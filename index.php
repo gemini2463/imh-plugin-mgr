@@ -1,5 +1,5 @@
 <?php
-// Plugin Manager
+//Plugin Manager
 
 /**
  * imh-plugin-mgr, a Web Interface for cPanel/WHM and CWP
@@ -170,6 +170,7 @@ if ($isCPanelServer) {
     echo '<div class="panel-body">';
     $key_file = '/opt/imh-cwp-dns/config/key';
     $platform = 'CWP';
+    $key_files = [];
 };
 
 
