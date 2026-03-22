@@ -1,4 +1,4 @@
-# imh-plugin-mgr, v0.0.2
+# imh-plugin-mgr, v0.0.3
 
 cPanel and CWP plugin manager.
 
@@ -37,12 +37,15 @@ cPanel and CWP plugin manager.
 - imh-plugin-mgr.png.sha256 - `sha256sum imh-plugin-mgr.png > imh-plugin-mgr.png.sha256`
 
 ## cPanel conf
+
 - imh-plugin-mgr.conf - [AppConfig Configuration File](https://api.docs.cpanel.net/guides/guide-to-whm-plugins/guide-to-whm-plugins-appconfig-configuration-file)
 - imh-plugin-mgr.conf.sha256 - `sha256sum imh-plugin-mgr.conf > imh-plugin-mgr.conf.sha256`
 
 ## CWP include
-- cwp-include.php - [CWP include](https://wiki.centos-webpanel.com/how-to-build-a-cwp-module)
-- cwp-include.php.sha256 - `sha256sum cwp-include.php > cwp-include.php.sha256`
+
+- imh-plugins.php - [CWP include](https://wiki.centos-webpanel.com/how-to-build-a-cwp-module)
+- imh-plugins.php.sha256 - `sha256sum imh-plugins.php > imh-plugins.php.sha256`
 
 ## sha256 one-liner
-- `for file in index.php cwp-include.php imh-plugin-mgr.conf imh-plugin-mgr.js imh-plugin-mgr.php imh-plugin-mgr.png; do sha256sum "$file" > "$file.sha256"; done`
+
+- `for file in index.php imh-plugins.php imh-plugin-mgr.conf imh-plugin-mgr.js imh-plugin-mgr.php imh-plugin-mgr.png; do sha256sum "$file" > "$file.sha256"; done`
